@@ -4,20 +4,24 @@
     <title>CS4241 Assignment 2</title>
     <meta charset='utf-8' />
     <script src='main.js'></script>
-    <link rel='stylesheet' href='/css/main.css' />
+    <!-- <link rel='stylesheet' href='/css/main.css' /> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- get rid of favicon error -->
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <form class = "container" id = myForm>
-      <label for="yourname" id="labels">What's your name? </label>
+    <form id = myForm>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+      <div class = "card">
+      <label class = "card-body" for="yourname" id="labels">What's your name? </label>
       <input type='text' id='yourname'>
       <br>
       <br>
-      <label for="assignment" id="labels">Assignment Type: </label>
+      <label class = "card-body" for="assignment" id="labels">Assignment Type: </label>
       <select name="assignment-type" id="assignmenttype">
         <option value="">--Please choose an option--</option>
         <option value="hw">hw</option>
@@ -27,7 +31,7 @@
       </select>
       <br>
       <br>
-      <label for="grade" id="labels">Letter Grade: </label>
+      <label class = "card-body" for="grade" id="labels">Letter Grade: </label>
       <select name="grade-letter" id="gradeletter">
         <option value="">--Please choose an option--</option>
         <option value="a">a</option>
@@ -37,11 +41,15 @@
       </select>
       <br>
       <br>
-      <label for="cmts" id="labels">Any comments? </label>
+      <label class = "card-body" for="cmts" id="labels">Any comments? </label>
       <textarea id="cmts" name="comments"></textarea>
       <br>
       <br>
-      <input class = btn type="button" value = "submit">
+      <input class = "btn btn-primary" type="button" value = "submit">
+    </div>
+    </div>
+    </div>
     </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   </body>
 </html>
