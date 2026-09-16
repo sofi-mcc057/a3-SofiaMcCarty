@@ -1,5 +1,53 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 let ul = null
+// const usernameInput = document.querySelector('#usernameInput')
+// const passwordInput = document.querySelector('#passwordInput')
+// const loginForm = document.getElementById('loginForm')
+// const loginButton = document.getElementById('loginButton')
+// const makeUserButton = document.getElementById('makeUser')
+console.log("JavaScript initialized successfully.")
+
+async function handleLogin(){
+  const usernameInput = document.getElementById('usernameInput')
+  const passwordInput = document.getElementById('passwordInput')
+  const payload = { username: usernameInput.value, password: passwordInput.value }
+      const response = await fetch('/login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+      })
+      if (response.ok){
+        window.location.href = response.url
+      } else{
+        const errorDiv = document.createElement('div')
+        errorDiv.className = 'alert alert-danger mt-3' 
+        errorDiv.innerHTML = `<p class="mb-0">Invalid login, press "create account" to make an account with these credentials</p>`
+        document.getElementById('loginForm').appendChild(errorDiv)
+      }
+}
+async function handleRegister(){
+  const usernameInput = document.getElementById('usernameInput')
+  const passwordInput = document.getElementById('passwordInput')
+  const makeUserButton = document.getElementById('makeUser')
+  const payload = { username: usernameInput.value, password: passwordInput.value }
+      const response = await fetch('/register', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+      })
+  const data = await response.json()
+  const alertDiv = document.createElement('div');
+  alertDiv.id = 'loginErrorMessage';
+  alertDiv.className = response.ok ? 'alert alert-success mt-3' : 'alert alert-danger mt-3';
+  alertDiv.innerHTML = `<p class="mb-0">${data.message}</p>`;
+  if (makeUserButton && makeUserButton.parentNode) {
+    makeUserButton.parentNode.insertBefore(alertDiv, makeUserButton.nextSibling);
+} else {
+    document.body.appendChild(alertDiv);
+}
+}
+const mainForm = document.getElementById('myForm')
+if (mainForm){
 const submit = async function( event ) {
   // stop form submission from trying to load
   // a new .html page for displaying results...
@@ -35,7 +83,8 @@ const submit = async function( event ) {
                 <span class="listlabel">Grade:</span> <span class="values">${item.gradeletter}</span><br>
                 <span class="listlabel">Comments:</span> <span class="values">${item.cmts}</span><br>
                 <span class="listlabel">GPA:</span> <span class="values">${item.GPA}</span><br>
-                <button class = deletebtn id="${item.id}" onclick="remove(event, ${item.id})">delete</button>`;
+                <button class = deletebtn id="${item.id}" onclick="remove(event, ${item.id})">delete</button><br>
+                <button class = editbtn id="${item.id}" onclick="edit(event, ${item.id})">edit</button><br>`;
     ul.appendChild(li)
   }
   console.log(arr)
@@ -54,9 +103,11 @@ const remove = async function ( event ){
  
 }
 
+
 window.onload = function() {
   const button = document.querySelector('.btn')
   button.onclick = submit
   ul = document.createElement('ul')
   document.body.appendChild(ul)
+}
 }
