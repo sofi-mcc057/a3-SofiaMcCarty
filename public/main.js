@@ -30,8 +30,8 @@ async function handleRegister(){
           body: JSON.stringify(payload)
       })
   const data = await response.json()
-  const alertDiv = document.createElement('div');
-  alertDiv.id = 'loginErrorMessage';
+  const alertDiv = document.createElement('div')
+  alertDiv.id = 'loginErrorMessage'
   alertDiv.className = response.ok ? 'alert alert-success mt-3' : 'alert alert-danger mt-3'
   alertDiv.innerHTML = `<p class="mb-0">${data.message}</p>`
   if (makeUserButton && makeUserButton.parentNode) {

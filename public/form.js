@@ -54,9 +54,8 @@
                     <span class="listlabel">Assignment Type:</span> <span class="values">${item.assignmenttype}</span><br>
                     <span class="listlabel">Grade:</span> <span class="values">${item.gradeletter}</span><br>
                     <span class="listlabel">Comments:</span> <span class="values">${item.cmts}</span><br>
-                    <span class="listlabel">GPA:</span> <span class="values">${item.GPA}</span><br>
                     <button class = "btn btn-primary" id='${item._id}' onclick="remove(event, '${item._id}')">delete</button><br>
-                    <button class = "btn btn-primary" id='${item._id}' onclick="edit(event, '${item._id}')">edit</button><br>`;
+                    <button class = "btn btn-primary" id='${item._id}' onclick="edit(event, '${item._id}')">edit</button><br>`
         ul.appendChild(li)
       }
       console.log(arr)
@@ -93,7 +92,7 @@
   window.onload = function() {
     const submitButton = document.getElementById('submitButton')
     if (submitButton) {
-        submitButton.onclick = handleSubmit;
+        submitButton.onclick = handleSubmit
     }
     ul = document.createElement('ul')
     document.body.appendChild(ul)

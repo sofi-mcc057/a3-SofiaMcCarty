@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 })
 
 app.post('/login', async (req, res) =>{
-    console.log("running function")
     const {username, password} = req.body
     const user = await collection.findOne({username: username})
     if (user && user.password ===password){
@@ -39,7 +38,6 @@ app.get('/logout', async (req,res) =>{
 })
 
 app.post('/register', async (req, res) =>{
-    console.log("running create function")
     const {username, password} = req.body
     const existingUser = await collection.findOne({ username: username })
     if (existingUser) {
@@ -60,7 +58,7 @@ app.use(function(req, res, next){
 app.post('/submit', (req, res) => {
     const {yourname, assignmenttype, gradeletter, cmts} = req.body
     const formTable = client.db("dbName").collection("entries")
-    console.log(req.session.username)
+    
     const newEntry = {
         yourname: yourname,
         assignmenttype: assignmenttype,
@@ -74,18 +72,16 @@ app.post('/submit', (req, res) => {
 })
 
 app.get('/get-entries', async (req, res) => {
-    console.log('getting entries...')
     const entriesCollection = client.db("dbName").collection("entries")
     const userEntries = await entriesCollection
     .find({ user: req.session.username })
-            .toArray();
+            .toArray()
 
-    return res.json(userEntries);
+    return res.json(userEntries)
  
 })
 
 app.delete('/remove', async (req,res) =>{
-    console.log("removing user")
     const {id} = req.body
     const entriesCollection = client.db("dbName").collection("entries")
     const removeEntry = await entriesCollection.deleteOne(
@@ -115,7 +111,6 @@ app.put('/edit', async (req, res) =>{
 async function run() {
     await client.connect()
     collection = await client.db("dbName").collection("users")
-    console.log("connected to db")
 }
 
 run().then(() => {
