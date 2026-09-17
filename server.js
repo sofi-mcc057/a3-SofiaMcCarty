@@ -28,11 +28,15 @@ app.post('/login', async (req, res) =>{
     const user = await collection.findOne({username: username})
     if (user && user.password ===password){
         req.session.login = true
+        req.session.username = user.username
         res.redirect('/main.html')
     } else{
         return res.status(401).json({ success: false, message: "Invalid username or password." })    }
 })
-
+app.get('/logout', async (req,res) =>{
+    req.session = null
+    return res.redirect('/')
+})
 
 app.post('/register', async (req, res) =>{
     console.log("running create function")
@@ -42,7 +46,6 @@ app.post('/register', async (req, res) =>{
         return res.status(400).json({ success: false, message: "Username is already taken." })
     }
     await collection.insertOne({username: username, password: password})
-    // res.writeHead(200, {'Content-Type': 'application/json'})
     return res.status(201).json({ success: true, message: "Account created successfully! You can now log in." })
 })
 
@@ -53,13 +56,59 @@ app.use(function(req, res, next){
         res.sendFile(__dirname + '/public/index.html')
     }
 })
-// app.post('/submit', middleware_post)
 
 app.post('/submit', (req, res) => {
-    entries.push(req.body)
-    console.log(req.body)
+    const {yourname, assignmenttype, gradeletter, cmts} = req.body
+    const formTable = client.db("dbName").collection("entries")
+    console.log(req.session.username)
+    const newEntry = {
+        yourname: yourname,
+        assignmenttype: assignmenttype,
+        gradeletter: gradeletter,
+        cmts: cmts,
+        user: req.session.username
+    }
+    formTable.insertOne(newEntry)
     res.writeHead(200, {'Content-Type': 'application/json'})
     res.end(JSON.stringify(entries))
+})
+
+app.get('/get-entries', async (req, res) => {
+    console.log('getting entries...')
+    const entriesCollection = client.db("dbName").collection("entries")
+    const userEntries = await entriesCollection
+    .find({ user: req.session.username })
+            .toArray();
+
+    return res.json(userEntries);
+ 
+})
+
+app.delete('/remove', async (req,res) =>{
+    console.log("removing user")
+    const {id} = req.body
+    const entriesCollection = client.db("dbName").collection("entries")
+    const removeEntry = await entriesCollection.deleteOne(
+        {_id : new ObjectId(id)})
+    return res.json(removeEntry)
+})
+
+app.put('/edit', async (req, res) =>{
+    const { id, assignmenttype, gradeletter, cmts } = req.body
+    const entriesCollection = client.db("dbName").collection("entries")
+    const result = await entriesCollection.updateOne(
+        { 
+            _id: new ObjectId(id), 
+        },
+        { 
+            $set: { 
+                assignmenttype: assignmenttype,
+                gradeletter: gradeletter,
+                cmts: cmts
+            } 
+        }
+    )
+    return res.json({success: true})
 })
 
 
